@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 
 import com.huawei.hmf.tasks.OnFailureListener;
 import com.huawei.hmf.tasks.OnSuccessListener;
@@ -21,6 +22,7 @@ import com.huawei.hms.support.hwid.ui.HuaweiIdAuthButton;
 public class MainActivity extends AppCompatActivity {
 
     HuaweiIdAuthButton huaweiIdAuthButton;
+    Button View_ImageKit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,13 @@ public class MainActivity extends AppCompatActivity {
 
         huaweiIdAuthButton.setOnClickListener(v -> {
             silentSignInByHwId();
+        });
+
+        View_ImageKit = (Button) findViewById(R.id.View_ImageKit);
+
+        View_ImageKit.setOnClickListener(v -> {
+            Intent view_image = new Intent(MainActivity.this, Image.class);
+            startActivity(view_image);
         });
     }
     // AccountAuthService provides a set of APIs, including silentSignIn, getSignInIntent, and signOut.
