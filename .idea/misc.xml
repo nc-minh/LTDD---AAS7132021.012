@@ -3,8 +3,26 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Learn/Android/BTL_QL_NV/app/src/main/res/layout/activity_image.xml" value="0.17708333333333334" />
-        <entry key="..\:/Learn/Android/BTL_QL_NV/app/src/main/res/layout/activity_main.xml" value="0.4" />
+        <entry key="..\:/Learn/Android/BTL_Android/app/src/main/res/drawable-v24/ic_change_password.xml" value="0.26205128205128203" />
+        <entry key="..\:/Learn/Android/BTL_Android/app/src/main/res/drawable-v24/ic_check.xml" value="0.26205128205128203" />
+        <entry key="..\:/Learn/Android/BTL_Android/app/src/main/res/drawable-v24/ic_favorite.xml" value="0.26205128205128203" />
+        <entry key="..\:/Learn/Android/BTL_Android/app/src/main/res/drawable-v24/ic_history.xml" value="0.26205128205128203" />
+        <entry key="..\:/Learn/Android/BTL_Android/app/src/main/res/drawable-v24/ic_home.xml" value="0.26205128205128203" />
+        <entry key="..\:/Learn/Android/BTL_Android/app/src/main/res/drawable-v24/ic_launcher_background.xml" value="0.26205128205128203" />
+        <entry key="..\:/Learn/Android/BTL_Android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.26205128205128203" />
+        <entry key="..\:/Learn/Android/BTL_Android/app/src/main/res/drawable-v24/ic_sign_out.xml" value="0.24722222222222223" />
+        <entry key="..\:/Learn/Android/BTL_Android/app/src/main/res/drawable-v24/ic_user.xml" value="0.24722222222222223" />
+        <entry key="..\:/Learn/Android/BTL_Android/app/src/main/res/layout/activity_main.xml" value="0.2359375" />
+        <entry key="..\:/Learn/Android/BTL_Android/app/src/main/res/layout/activity_sign_in.xml" value="0.2359375" />
+        <entry key="..\:/Learn/Android/BTL_Android/app/src/main/res/layout/activity_sign_up.xml" value="0.2359375" />
+        <entry key="..\:/Learn/Android/BTL_Android/app/src/main/res/layout/activity_splash.xml" value="0.2359375" />
+        <entry key="..\:/Learn/Android/BTL_Android/app/src/main/res/layout/fragment_change_pass_word.xml" value="0.2359375" />
+        <entry key="..\:/Learn/Android/BTL_Android/app/src/main/res/layout/fragment_favorite.xml" value="0.25" />
+        <entry key="..\:/Learn/Android/BTL_Android/app/src/main/res/layout/fragment_history.xml" value="0.25" />
+        <entry key="..\:/Learn/Android/BTL_Android/app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="..\:/Learn/Android/BTL_Android/app/src/main/res/layout/fragment_my_profile.xml" value="0.2359375" />
+        <entry key="..\:/Learn/Android/BTL_Android/app/src/main/res/layout/layout_header_navigation.xml" value="0.25" />
+        <entry key="..\:/Learn/Android/BTL_Android/app/src/main/res/menu/menu_navigation.xml" value="0.25" />
       </map>
     </option>
   </component>

@@ -1,4 +1,4 @@
-package com.ncm.btl_ql_nv;
+package com.ncm.btl_android;
 
 import org.junit.Test;
 

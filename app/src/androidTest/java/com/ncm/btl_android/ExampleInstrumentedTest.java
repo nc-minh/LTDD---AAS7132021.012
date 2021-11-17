@@ -1,4 +1,4 @@
-package com.ncm.btl_ql_nv;
+package com.ncm.btl_android;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.ncm.btl_ql_nv", appContext.getPackageName());
+        assertEquals("com.ncm.btl_android", appContext.getPackageName());
     }
 }
