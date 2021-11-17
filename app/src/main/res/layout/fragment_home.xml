@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="20dp"
     android:background="#FFBCA2">
@@ -13,18 +14,23 @@
         android:hint="Data"
         android:textColorHint="@color/black"
         android:textColor="@color/black"
+        android:layout_alignParentTop="true"
         android:textSize="16sp"/>
 
     <Button
         android:id="@+id/btn_push_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_alignParentTop="true"
         android:text="PUSH data"/>
 
     <Button
         android:id="@+id/btn_get_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/btn_push_data"
         android:text="GET data"/>
     <TextView
         android:id="@+id/tv_get_data"
@@ -32,17 +38,51 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:layout_marginTop="10dp"
+        android:layout_below="@+id/btn_get_data"
         android:textColor="@color/black"/>
 
     <Button
         android:id="@+id/btn_delete_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="delete data"/>
+        android:layout_below="@+id/tv_get_data"
+        android:layout_marginTop="20dp"
+        android:text="delete data" />
+
     <Button
         android:id="@+id/btn_update_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="update data"/>
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/btn_delete_data"
+        android:text="update data" />
 
-</LinearLayout>
+    <com.sa90.materialarcmenu.ArcMenu
+        android:id="@+id/arcMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:menu_scr="@android:drawable/ic_input_add"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        app:menu_open="arc_left"
+        app:menu_radius="100dp">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add"
+            android:layout_width="wrap_content"
+            android:src="@android:drawable/ic_input_add"
+            android:layout_height="wrap_content" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_delete"
+            android:layout_width="wrap_content"
+            android:src="@android:drawable/ic_delete"
+            android:layout_height="wrap_content" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_update"
+            android:layout_width="wrap_content"
+            android:src="@android:drawable/ic_menu_edit"
+            android:layout_height="wrap_content" />
+
+    </com.sa90.materialarcmenu.ArcMenu>
+
+</RelativeLayout>
