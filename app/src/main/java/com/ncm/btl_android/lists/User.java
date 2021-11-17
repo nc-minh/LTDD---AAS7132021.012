@@ -1,5 +1,8 @@
 package com.ncm.btl_android.lists;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class User {
     private int id;
     private String name;
@@ -28,11 +31,18 @@ public class User {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+//    @Override
+//    public String toString() {
+//        return "User{" +
+//                "id=" + id +
+//                ", name='" + name + '\'' +
+//                '}';
+//    }
+
+    public Map<String, Object> toMap(){
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("name", name);
+
+        return result;
     }
 }
