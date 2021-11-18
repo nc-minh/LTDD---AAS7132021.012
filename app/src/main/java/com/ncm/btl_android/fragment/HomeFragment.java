@@ -57,8 +57,12 @@ public class HomeFragment extends Fragment {
 
     private List<Data> mListData;
 
+
     FirebaseUser userCurrent = FirebaseAuth.getInstance().getCurrentUser();
     String UserID = userCurrent.getUid();
+
+    private static final int GET = 0;
+    private int CURRENT = 0;
 
 
     @Nullable
@@ -66,6 +70,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_home,container, false);
         initUI();
+
 
 
         viewAddData.setOnClickListener(v -> {
@@ -78,15 +83,16 @@ public class HomeFragment extends Fragment {
 
         sortData.setOnClickListener(v -> {
             mListData.clear();
-//            sortListDataAZ();
-//            getActivity().finish();
-//            startActivity(getActivity().getIntent());
+            sortListDataAZ();
+            CURRENT = 1;
         });
 
+        if(GET == CURRENT){
+            getListDataFromDB();
+        }
 
+//        mListData.clear();
 
-
-        getListDataFromDB();
         return mView;
     }
 
@@ -128,13 +134,13 @@ public class HomeFragment extends Fragment {
         DatabaseReference myRef = database.getReference(UserID);
 
         //sort data
-        Query query = myRef.orderByChild("rate");
+        Query query = myRef.orderByChild("id");
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Data user = snapshot.getValue(Data.class);
                 if(user != null){
-                    mListData.add(user);
+                    mListData.add(0,user);
                     dataAdapter.notifyDataSetChanged();
                 }
 

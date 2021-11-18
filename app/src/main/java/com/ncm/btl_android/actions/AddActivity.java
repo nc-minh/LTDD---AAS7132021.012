@@ -23,12 +23,14 @@ import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.ncm.btl_android.MainActivity;
 import com.ncm.btl_android.R;
 import com.ncm.btl_android.SignInActivity;
 import com.ncm.btl_android.fragment.ChangePassWordFragment;
 import com.ncm.btl_android.fragment.FavoriteFragment;
 import com.ncm.btl_android.fragment.HistoryFragment;
 import com.ncm.btl_android.fragment.HomeFragment;
+import com.ncm.btl_android.fragment.MyProfileFragment;
 import com.ncm.btl_android.lists.Data;
 
 public class AddActivity extends AppCompatActivity{
@@ -38,6 +40,8 @@ public class AddActivity extends AppCompatActivity{
 
     FirebaseUser userCurrent = FirebaseAuth.getInstance().getCurrentUser();
     String UserID = userCurrent.getUid();
+
+    final private MainActivity mainActivity = new MainActivity();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,8 @@ public class AddActivity extends AppCompatActivity{
             Data user = new Data(id, name);
             onClickAddData(user);
         });
+
+
     }
 
     private void initUI(){
@@ -75,4 +81,12 @@ public class AddActivity extends AppCompatActivity{
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(getApplicationContext(),
+                MainActivity.class);
+
+        startActivity(intent);
+    }
 }

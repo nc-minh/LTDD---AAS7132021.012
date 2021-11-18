@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     final private MyProfileFragment myProfileFragment = new MyProfileFragment();
 
+
     final private ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
         @Override
