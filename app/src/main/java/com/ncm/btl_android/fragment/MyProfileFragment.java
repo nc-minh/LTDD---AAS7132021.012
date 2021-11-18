@@ -49,7 +49,7 @@ public class MyProfileFragment extends Fragment {
         initUI();
         mainActivity = (MainActivity) getActivity();
         progressDialog = new ProgressDialog(getActivity());
-        setUserInfomation();
+        setDataInfomation();
         initListener();
         
 
@@ -64,7 +64,7 @@ public class MyProfileFragment extends Fragment {
         btn_update_email = mView.findViewById(R.id.btn_update_email);
     }
 
-    private void setUserInfomation() {
+    private void setDataInfomation() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user == null){
             return;
@@ -140,7 +140,7 @@ public class MyProfileFragment extends Fragment {
                         progressDialog.dismiss();
                         if (task.isSuccessful()) {
                             Toast.makeText(getActivity(), "User profile updated", Toast.LENGTH_SHORT).show();
-                            mainActivity.showUserInformation();
+                            mainActivity.showDataInformation();
                         }
                     }
                 });
@@ -158,7 +158,7 @@ public class MyProfileFragment extends Fragment {
                         progressDialog.dismiss();
                         if (task.isSuccessful()) {
                             Toast.makeText(getActivity(), "User email updated", Toast.LENGTH_SHORT).show();
-                            mainActivity.showUserInformation();
+                            mainActivity.showDataInformation();
                         }else{
                             Toast.makeText(getActivity(), "User email failed", Toast.LENGTH_SHORT).show();
                         }

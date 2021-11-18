@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#00000000"
+    android:id="@+id/layout_dialog_update">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:orientation="vertical"
+        android:background="@color/black">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/purple_700"
+            android:text="Dialog Update Title"
+            android:padding="12dp"
+            android:gravity="center"
+            android:textColor="@color/white"/>
+
+        <EditText
+            android:id="@+id/edt_update_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Content update"
+            android:padding="12dp"
+            android:layout_marginTop="20dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+            
+            <Button
+                android:id="@+id/btn_cancel_UDcontent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cancel"
+                android:layout_marginRight="10dp"/>
+            <Button
+                android:id="@+id/btn_update_content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Update"/>
+            
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

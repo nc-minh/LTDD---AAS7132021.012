@@ -38,6 +38,11 @@
             android:layout_width="wrap_content"
             android:src="@android:drawable/ic_menu_edit"
             android:layout_height="wrap_content" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_sort"
+            android:layout_width="wrap_content"
+            android:src="@android:drawable/ic_menu_sort_alphabetically"
+            android:layout_height="wrap_content" />
 
     </com.sa90.materialarcmenu.ArcMenu>
 

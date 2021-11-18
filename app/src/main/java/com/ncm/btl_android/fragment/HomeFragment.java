@@ -1,10 +1,17 @@
 package com.ncm.btl_android.fragment;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,15 +26,19 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ncm.btl_android.R;
 import com.ncm.btl_android.actions.AddActivity;
 import com.ncm.btl_android.adapter.DataAdapter;
-import com.ncm.btl_android.lists.User;
+import com.ncm.btl_android.lists.Data;
 import com.sa90.materialarcmenu.ArcMenu;
 
 import java.util.ArrayList;
@@ -39,12 +50,15 @@ public class HomeFragment extends Fragment {
     private View mView;
 
     private ArcMenu arcMenu;
-    private ImageView viewAddData;
+    private ImageView viewAddData, sortData;
 
     private RecyclerView recyclerView;
     private DataAdapter dataAdapter;
 
-    private List<User> mListUser;
+    private List<Data> mListData;
+
+    FirebaseUser userCurrent = FirebaseAuth.getInstance().getCurrentUser();
+    String UserID = userCurrent.getUid();
 
 
     @Nullable
@@ -59,10 +73,20 @@ public class HomeFragment extends Fragment {
             Intent intent = new Intent(getActivity(), AddActivity.class);
             startActivity(intent);
 
-            mListUser.clear();
+//            mListData.clear();
         });
 
-        getListUsersFromDB();
+        sortData.setOnClickListener(v -> {
+            mListData.clear();
+//            sortListDataAZ();
+//            getActivity().finish();
+//            startActivity(getActivity().getIntent());
+        });
+
+
+
+
+        getListDataFromDB();
         return mView;
     }
 
@@ -72,6 +96,7 @@ public class HomeFragment extends Fragment {
 
         //
         viewAddData = mView.findViewById(R.id.fab_add);
+        sortData = mView.findViewById(R.id.fab_sort);
         //
         recyclerView = mView.findViewById(R.id.rcv_data);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -81,33 +106,239 @@ public class HomeFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        mListUser = new ArrayList<>();
-        dataAdapter = new DataAdapter(mListUser);
+        mListData = new ArrayList<>();
+        dataAdapter = new DataAdapter(mListData, new DataAdapter.IClickListener() {
+            @Override
+            public void onClickUpdateItem(Data user) {
+                openDialogUpdateItem(user);
+            }
+
+            @Override
+            public void onClickDeleteItem(Data user) {
+                openDialogDeleteItem(user);
+            }
+        });
 
         recyclerView.setAdapter(dataAdapter);
     }
 
-    private void getListUsersFromDB(){
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("list_users");
+    private void sortListDataAZ(){
 
-        myRef.addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(UserID);
+
+        //sort data
+        Query query = myRef.orderByChild("rate");
+        query.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    User user = dataSnapshot.getValue(User.class);
-                    mListUser.add(user);
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Data user = snapshot.getValue(Data.class);
+                if(user != null){
+                    mListData.add(user);
+                    dataAdapter.notifyDataSetChanged();
+                }
+
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Data user = snapshot.getValue(Data.class);
+                if(user == null || mListData == null || mListData.isEmpty()){
+                    return;
+                }
+
+                for(int i = 0; i< mListData.size(); i++){
+                    if(user.getId() == mListData.get(i).getId()){
+                        mListData.set(i, user);
+                        break;
+                    }
                 }
 
                 dataAdapter.notifyDataSetChanged();
             }
 
             @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                Data user = snapshot.getValue(Data.class);
+                if(user == null || mListData == null || mListData.isEmpty()){
+                    return;
+                }
+
+                for(int i = 0; i< mListData.size(); i++){
+                    if(user.getId() == mListData.get(i).getId()){
+                        mListData.remove(mListData.get(i));
+                        break;
+                    }
+                }
+
+                dataAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getActivity(), "Get data failed!", Toast.LENGTH_SHORT).show();
+
             }
         });
 
+    }
+
+    private void getListDataFromDB(){
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(UserID);
+
+
+        //get data
+        //cách 1 không tối ưu UX
+//        myRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if(mListData != null){
+//                    mListData.clear();
+//                }
+//                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+//                    Data user = dataSnapshot.getValue(Data.class);
+//                    mListData.add(user);
+//                }
+//
+//                dataAdapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Toast.makeText(getActivity(), "Get data failed!", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+        //Cách 2
+//        Query query = myRef.orderByChild("rate");
+        myRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Data user = snapshot.getValue(Data.class);
+                if(user != null){
+                    mListData.add(user);
+                    dataAdapter.notifyDataSetChanged();
+                }
+
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Data user = snapshot.getValue(Data.class);
+                if(user == null || mListData == null || mListData.isEmpty()){
+                    return;
+                }
+
+                for(int i = 0; i< mListData.size(); i++){
+                    if(user.getId() == mListData.get(i).getId()){
+                        mListData.set(i, user);
+                        break;
+                    }
+                }
+
+                dataAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                Data user = snapshot.getValue(Data.class);
+                if(user == null || mListData == null || mListData.isEmpty()){
+                    return;
+                }
+
+                for(int i = 0; i< mListData.size(); i++){
+                    if(user.getId() == mListData.get(i).getId()){
+                        mListData.remove(mListData.get(i));
+                        break;
+                    }
+                }
+
+                dataAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    private void openDialogUpdateItem(Data user){
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window. FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.layout_dialog_update);
+        Window window = dialog.getWindow();
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCancelable(false);
+
+
+        EditText edtUpdateContent = dialog.findViewById(R.id.edt_update_content);
+        Button btnCancelUD = dialog.findViewById(R.id.btn_cancel_UDcontent);
+        Button btnUpdateContent = dialog.findViewById(R.id.btn_update_content);
+
+        edtUpdateContent.setText(user.getName());
+
+        btnCancelUD.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        btnUpdateContent.setOnClickListener(v -> {
+
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference(UserID);
+
+            String newContent = edtUpdateContent.getText().toString().trim();
+
+            user.setName(newContent);
+            myRef.child(String.valueOf(user.getId())).updateChildren(user.toMap(), new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                    Toast.makeText(getActivity(), "Update data success!", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            });
+        });
+
+        dialog.show();
+    }
+
+    private void openDialogDeleteItem(Data user){
+        new AlertDialog.Builder(getActivity())
+                .setTitle(getString(R.string.app_name))
+                .setMessage("Bạn có chắc chắn muốn xóa không?")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference myRef = database.getReference(UserID);
+
+                        myRef.child(String.valueOf(user.getId())).removeValue(new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                                Toast.makeText(getActivity(), "Delete data success!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    }
+                    )
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 
 }
