@@ -11,7 +11,7 @@
         android:id="@+id/rcv_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp" />
 
     <com.sa90.materialarcmenu.ArcMenu
         android:id="@+id/arcMenu"
@@ -42,7 +42,7 @@
             android:id="@+id/fab_sort"
             android:layout_width="wrap_content"
             android:src="@android:drawable/ic_menu_sort_alphabetically"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
 
     </com.sa90.materialarcmenu.ArcMenu>
 

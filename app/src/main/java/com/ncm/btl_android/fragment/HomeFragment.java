@@ -15,13 +15,11 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,7 +32,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.ncm.btl_android.R;
 import com.ncm.btl_android.actions.AddActivity;
 import com.ncm.btl_android.adapter.DataAdapter;
@@ -89,6 +86,7 @@ public class HomeFragment extends Fragment {
 
         if(GET == CURRENT){
             getListDataFromDB();
+
         }
 
 //        mListData.clear();
@@ -134,6 +132,9 @@ public class HomeFragment extends Fragment {
         DatabaseReference myRef = database.getReference(UserID);
 
         //sort data
+        //orderByChild() -> id
+        //orderByKey()
+        //orderByValue()
         Query query = myRef.orderByChild("id");
         query.addChildEventListener(new ChildEventListener() {
             @Override
@@ -194,6 +195,82 @@ public class HomeFragment extends Fragment {
 
     }
 
+    //funcion filtering data
+    private void filterData(){
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(UserID);
+
+        Query query = myRef.orderByChild("id").endBefore(3);
+        query.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Data user = snapshot.getValue(Data.class);
+                if(user != null){
+                    mListData.add(user);
+                    dataAdapter.notifyDataSetChanged();
+                }
+
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Data user = snapshot.getValue(Data.class);
+                if(user == null || mListData == null || mListData.isEmpty()){
+                    return;
+                }
+
+                for(int i = 0; i< mListData.size(); i++){
+                    if(user.getId() == mListData.get(i).getId()){
+                        mListData.set(i, user);
+                        break;
+                    }
+                }
+
+                dataAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                Data user = snapshot.getValue(Data.class);
+                if(user == null || mListData == null || mListData.isEmpty()){
+                    return;
+                }
+
+                for(int i = 0; i< mListData.size(); i++){
+                    if(user.getId() == mListData.get(i).getId()){
+                        mListData.remove(mListData.get(i));
+                        break;
+                    }
+                }
+
+                dataAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+
+
+//    Filtering data
+//    limitToFirst()
+//    limitToLast()
+//    startAt()
+//    startAfter()
+//    endAt()
+//    endBefore()
+//    equalTo()
     private void getListDataFromDB(){
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
