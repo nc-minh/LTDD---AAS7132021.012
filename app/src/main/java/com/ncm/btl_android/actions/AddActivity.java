@@ -1,36 +1,23 @@
 package com.ncm.btl_android.actions;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
+import android.text.format.Time;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.navigation.NavigationView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.ncm.btl_android.MainActivity;
 import com.ncm.btl_android.R;
-import com.ncm.btl_android.SignInActivity;
-import com.ncm.btl_android.fragment.ChangePassWordFragment;
-import com.ncm.btl_android.fragment.FavoriteFragment;
-import com.ncm.btl_android.fragment.HistoryFragment;
-import com.ncm.btl_android.fragment.HomeFragment;
-import com.ncm.btl_android.fragment.MyProfileFragment;
 import com.ncm.btl_android.lists.Data;
 
 public class AddActivity extends AppCompatActivity{
@@ -42,7 +29,7 @@ public class AddActivity extends AppCompatActivity{
     String UserID = userCurrent.getUid();
 
     final private MainActivity mainActivity = new MainActivity();
-
+    //Date currentTime = Calendar.getInstance().getTime();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +40,16 @@ public class AddActivity extends AppCompatActivity{
         btnAddData.setOnClickListener(v -> {
             int id = Integer.parseInt(edtID.getText().toString().trim());
             String name = edtName.getText().toString().trim();
-            Data user = new Data(id, name);
+
+            //Date currentTime = Calendar.getInstance().getTime();
+
+
+            Time today = new Time(Time.getCurrentTimezone());
+            today.setToNow();
+
+            String time = today.monthDay + "/" + today.month + "/" + today.year + today;
+
+            Data user = new Data(id, name, time);
             onClickAddData(user);
         });
 

@@ -49,6 +49,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.DataViewHolder
 
         holder.tvID.setText("ID: " + user.getId());
         holder.tvName.setText("Work: " + user.getName());
+        holder.tv_timer.setText("Time: " + user.getTime());
 
         holder.btnUpdate.setOnClickListener(v -> {
             iClickListener.onClickUpdateItem(user);
@@ -69,7 +70,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.DataViewHolder
 
     public class DataViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView tvID, tvName;
+        private TextView tvID, tvName, tv_timer;
         private Button btnUpdate, btnDelete;
 
         public DataViewHolder(@NonNull View itemView) {
@@ -80,6 +81,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.DataViewHolder
         private void initUI() {
             tvID = itemView.findViewById(R.id.tv_id);
             tvName = itemView.findViewById(R.id.tv_name);
+            tv_timer = itemView.findViewById(R.id.tv_timer);
             btnUpdate = itemView.findViewById(R.id.btn_update);
             btnDelete = itemView.findViewById(R.id.btn_delete);
         }
