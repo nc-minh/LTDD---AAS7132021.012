@@ -41,7 +41,7 @@ import com.sa90.materialarcmenu.ArcMenu;
 import java.util.ArrayList;
 import java.util.List;
 
-
+//tạo nhạc nền - sắp xếp lại cái add sau lên đầu (dòng 308)
 public class HomeFragment extends Fragment {
 
     private View mView;
@@ -305,7 +305,8 @@ public class HomeFragment extends Fragment {
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Data user = snapshot.getValue(Data.class);
                 if(user != null){
-                    mListData.add(user);
+                    //muốn add cái sau lên đầu thì cần cho số 0 vào có nghĩa là cái nào add cuối sẽ add vào sau sẽ lên đầu
+                    mListData.add(0,user);
                     dataAdapter.notifyDataSetChanged();
                 }
 
