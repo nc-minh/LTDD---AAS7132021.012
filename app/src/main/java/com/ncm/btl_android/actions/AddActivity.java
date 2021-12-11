@@ -47,7 +47,7 @@ public class AddActivity extends AppCompatActivity{
             Time today = new Time(Time.getCurrentTimezone());
             today.setToNow();
 
-            String time = today.monthDay + "/" + today.month + "/" + today.year + today;
+            String time = today.monthDay + "/" + today.month + "/" + today.year;
 
             Data user = new Data(id, name, time);
             onClickAddData(user);
@@ -72,7 +72,7 @@ public class AddActivity extends AppCompatActivity{
         myRef.child(pathObject).setValue(user, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                Toast.makeText(AddActivity.this, "Add user success!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddActivity.this, "Add data success!", Toast.LENGTH_SHORT).show();
             }
         });
     }

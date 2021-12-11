@@ -49,7 +49,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.DataViewHolder
 
         holder.tvID.setText("ID: " + user.getId());
         holder.tvName.setText("Work: " + user.getName());
-        holder.tv_timer.setText("Time: " + user.getTime());
+        holder.tv_timer.setText("Time: " + user.getTimer());
 
         holder.btnUpdate.setOnClickListener(v -> {
             iClickListener.onClickUpdateItem(user);

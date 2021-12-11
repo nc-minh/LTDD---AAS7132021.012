@@ -40,8 +40,10 @@ import com.sa90.materialarcmenu.ArcMenu;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-//tạo nhạc nền - sắp xếp lại cái add sau lên đầu (dòng 308)
+//danh sách mới nhất lên đầu
+//nhạc nền
 public class HomeFragment extends Fragment {
 
     private View mView;
@@ -53,6 +55,9 @@ public class HomeFragment extends Fragment {
     private DataAdapter dataAdapter;
 
     private List<Data> mListData;
+
+    private EditText search;
+    private Button search_btn;
 
 
     FirebaseUser userCurrent = FirebaseAuth.getInstance().getCurrentUser();
@@ -86,8 +91,14 @@ public class HomeFragment extends Fragment {
 
         if(GET == CURRENT){
             getListDataFromDB();
-
         }
+
+        search_btn.setOnClickListener(v -> {
+            mListData.clear();
+            String name = search.getText().toString().trim();
+            searchData(name.toLowerCase(Locale.ROOT));
+        });
+
 
 //        mListData.clear();
 
@@ -106,9 +117,13 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
 
+        search = mView.findViewById(R.id.search);
+        search_btn = mView.findViewById(R.id.search_btn);
+
         //phân cách các item trong item_data
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
+
 
         mListData = new ArrayList<>();
         dataAdapter = new DataAdapter(mListData, new DataAdapter.IClickListener() {
@@ -124,6 +139,8 @@ public class HomeFragment extends Fragment {
         });
 
         recyclerView.setAdapter(dataAdapter);
+
+
     }
 
     private void sortListDataAZ(){
@@ -201,13 +218,80 @@ public class HomeFragment extends Fragment {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(UserID);
 
-        Query query = myRef.orderByChild("id").endBefore(3);
+        Query query = myRef.orderByChild("id").limitToFirst(3);
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Data user = snapshot.getValue(Data.class);
                 if(user != null){
                     mListData.add(user);
+                    dataAdapter.notifyDataSetChanged();
+                }
+
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Data user = snapshot.getValue(Data.class);
+                if(user == null || mListData == null || mListData.isEmpty()){
+                    return;
+                }
+
+                for(int i = 0; i< mListData.size(); i++){
+                    if(user.getId() == mListData.get(i).getId()){
+                        mListData.set(i, user);
+                        break;
+                    }
+                }
+
+                dataAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                Data user = snapshot.getValue(Data.class);
+                if(user == null || mListData == null || mListData.isEmpty()){
+                    return;
+                }
+
+                for(int i = 0; i< mListData.size(); i++){
+                    if(user.getId() == mListData.get(i).getId()){
+                        mListData.remove(mListData.get(i));
+                        break;
+                    }
+                }
+
+                dataAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    private void searchData(String name){
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(UserID);
+
+        Query query = myRef.orderByChild("id").limitToFirst(3);
+        query.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Data user = snapshot.getValue(Data.class);
+                if(user != null){
+                    if(user.getName().toLowerCase(Locale.ROOT).contains(name)){
+                        mListData.add(user);
+                    }
                     dataAdapter.notifyDataSetChanged();
                 }
 
@@ -305,9 +389,11 @@ public class HomeFragment extends Fragment {
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Data user = snapshot.getValue(Data.class);
                 if(user != null){
-                    //muốn add cái sau lên đầu thì cần cho số 0 vào có nghĩa là cái nào add cuối sẽ add vào sau sẽ lên đầu
-                    mListData.add(0,user);
+
+                    mListData.add(user);
                     dataAdapter.notifyDataSetChanged();
+
+
                 }
 
 

@@ -7,11 +7,22 @@
     android:padding="20dp"
     android:background="#FFBCA2">
 
+    <EditText
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/search_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:text="TÌM"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcv_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="90dp" />
 
     <com.sa90.materialarcmenu.ArcMenu
         android:id="@+id/arcMenu"
@@ -21,7 +32,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         app:menu_open="arc_left"
-        app:menu_radius="100dp">
+        app:menu_radius="120dp">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_add"
@@ -42,6 +53,11 @@
             android:id="@+id/fab_sort"
             android:layout_width="wrap_content"
             android:src="@android:drawable/ic_menu_sort_alphabetically"
+            android:layout_height="wrap_content"/>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_sortBySize"
+            android:layout_width="wrap_content"
+            android:src="@android:drawable/ic_menu_sort_by_size"
             android:layout_height="wrap_content"/>
 
     </com.sa90.materialarcmenu.ArcMenu>

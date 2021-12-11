@@ -35,7 +35,6 @@ public class SignUpActivity extends AppCompatActivity {
         edtPassword = findViewById(R.id.edt_password);
         btnSignUp = findViewById(R.id.btn_sign_up);
 
-
         progressDialog = new ProgressDialog(this);
     }
 

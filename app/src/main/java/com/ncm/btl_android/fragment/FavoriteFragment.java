@@ -29,7 +29,6 @@ public class FavoriteFragment extends Fragment {
 
 
 
-
         player = MediaPlayer.create(getActivity(), R.raw.bai1);
         stop = mView.findViewById(R.id.stop);
         play = mView.findViewById(R.id.play);

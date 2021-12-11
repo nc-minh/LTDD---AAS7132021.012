@@ -6,15 +6,15 @@ import java.util.Map;
 public class Data {
     private int id;
     private String name;
-    private  String time;
+    private String timer;
 
     public Data() {
     }
 
-    public Data(int id, String name, String time) {
+    public Data(int id, String name, String timer) {
         this.id = id;
         this.name = name;
-        this.time = time;
+        this.timer = timer;
     }
 
     public int getId() {
@@ -33,12 +33,12 @@ public class Data {
         this.name = name;
     }
 
-    public String getTime() {
-        return time;
+    public String getTimer() {
+        return timer;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setTimer(String timer) {
+        this.timer = timer;
     }
 
     //    @Override
@@ -52,7 +52,7 @@ public class Data {
     public Map<String, Object> toMap(){
         HashMap<String, Object> result = new HashMap<>();
         result.put("name", name);
-        result.put("time", time);
+        result.put("timer", timer);
 
         return result;
     }
