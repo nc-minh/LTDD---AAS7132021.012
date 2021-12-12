@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -446,6 +447,25 @@ public class HomeFragment extends Fragment {
 
     }
 
+    //update time
+    private void updateTime(Data user){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(UserID);
+
+        Time today = new Time(Time.getCurrentTimezone());
+        today.setToNow();
+
+        String newContent = today.hour + ":"  + today.minute + ":" + today.second + "|" + today.monthDay + "/" + today.month + "/" + today.year;
+
+        user.setTimer(newContent);
+        myRef.child(String.valueOf(user.getId())).updateChildren(user.toMap(), new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                //update thanh cong
+            }
+        });
+    }
+
     private void openDialogUpdateItem(Data user){
         final Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window. FEATURE_NO_TITLE);
@@ -472,7 +492,7 @@ public class HomeFragment extends Fragment {
             DatabaseReference myRef = database.getReference(UserID);
 
             String newContent = edtUpdateContent.getText().toString().trim();
-
+            updateTime(user);
             user.setName(newContent);
             myRef.child(String.valueOf(user.getId())).updateChildren(user.toMap(), new DatabaseReference.CompletionListener() {
                 @Override
